@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+  jrpc:
+    container_name: jrpc-windows-buildsystem
+    #Uncomment this line to use a pre-built container If you do so, comment out the "build" section
+    #image: jrpc1/jrpc-linux-buildsystem:latest
+    build: 
+        context: ./
+        dockerfile: Dockerfile-windows-builder
+    restart: "no"
+    volumes:
+      - "..:/imgui_manual"
+    command: $COMMAND

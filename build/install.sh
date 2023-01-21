@@ -11,11 +11,12 @@ reset=`tput sgr0`
 read -p "Wat do you want to do with the JRPC Blockchain Visualizer?
   ${green}1)${reset}: Build the Demo Application 
   ${green}2)${reset}: Run the JRPC Blockchain Visualizer Docker container in Debug mode
+  ${green}3)${reset}: Build imgui-node-editor examples
   " JRPC_Blockchain_Visualizer_flag
 
 case $JRPC_Blockchain_Visualizer_flag in
   1) # Build Application
-    export COMMAND="bash -c 'python ../external/hello_imgui/tools/vcpkg_install_third_parties.py && cmake .. -DCMAKE_TOOLCHAIN_FILE=../external/hello_imgui/vcpkg/scripts/buildsystems/vcpkg.cmake && make -j 4 && /imgui_manual/tools/emscripten_build.sh'"
+    export COMMAND="bash -c 'python ../external/hello_imgui/tools/vcpkg_install_third_parties.py && cmake .. -DCMAKE_TOOLCHAIN_FILE=../external/hello_imgui/vcpkg/scripts/buildsystems/vcpkg.cmake && make -j 4 && ./imgui_manual/tools/emscripten_build.sh'"
     
     echo -e "Installing custom third party build script: \n${green}cp vcpkg_install_third_parties.py $jrpc_beta/external/hello_imgui/tools/${reset}"
     cp $jrpc_beta/build/vcpkg_install_third_parties.py $jrpc_beta/external/hello_imgui/tools/
@@ -33,9 +34,27 @@ case $JRPC_Blockchain_Visualizer_flag in
     nohup docker-compose -p JRPC-linux-buildsystèmes -f $jrpc_beta/build/build-Linux.yaml up --no-deps --build &
     sleep 5
     
-    echo -e "Entering into the Cocker container in debug mode: \n${green}docker exec -it jrpc-linux-buildsystem /bin/bash${reset}"
+    echo -e "Entering into the Docker container in debug mode: \n${green}docker exec -it jrpc-linux-buildsystem /bin/bash${reset}"
     docker exec -it jrpc-linux-buildsystem /bin/bash 
     
     echo -e "Stopping docker-compose script: \n${green}docker-compose -p JRPC-linux-buildsystèmes -f $jrpc_beta/build/build-Linux.yaml down${reset}"
     docker-compose -p JRPC-linux-buildsystèmes -f $jrpc_beta/build/build-Linux.yaml down ;;
+
+  3) # Build imgui-node-editor examples
+    export COMMAND="/bin/sh -c 'cd /imgui_manual/external/imgui-node-editor && ./build.sh'"
+    
+    echo -e "Starting docker-compose script: \n${green}docker-compose -p JRPC-windows-buildsystèmes -f $jrpc_beta/build/build-Windows.yaml up --no-deps --build${reset}"
+    docker-compose -p JRPC-windows-buildsystèmes -f $jrpc_beta/build/build-Windows.yaml up --no-deps --build
+    
+    echo -e "making directories \n${green}$jrpc_beta/external/imgui-node-editor/build/bin/data${reset}"
+    mkdir -p $jrpc_beta/external/imgui-node-editor/build/bin/data
+
+    echo -e "Starting Application: \n${green}$jrpc_beta/external/imgui-node-editor/build/blueprints-example${reset}"
+    cd $jrpc_beta/external/imgui-node-editor/build/bin
+    $jrpc_beta/external/imgui-node-editor/build/bin/blueprints-example 
+    
+    echo -e "Stopping docker-compose script: \n${green}docker-compose -p JRPC-linux-buildsystèmes -f $jrpc_beta/build/build-Linux.yaml down${reset}"
+    docker-compose -p JRPC-linux-buildsystèmes -f $jrpc_beta/build/build-Windows.yaml down ;;
+    
+    
 esac
