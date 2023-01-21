@@ -1,2 +1,6 @@
-bin
-bin_emscripten
+#folders
+bin/
+bin_emscripten/
+
+#files
+.clang-format
