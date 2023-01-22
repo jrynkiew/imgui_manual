@@ -46,8 +46,8 @@ do
       break ;;
 
     2) # Build IoTeX Pebble Tracker Firmware
-      cd $jrpc_beta/external/pebble-firmware/
-      bash $jrpc_beta/external/pebble-firmware/install.sh
+      cd $jrpc_beta/external/pebble-tracker-firmware-builder/
+      bash $jrpc_beta/external/pebble-tracker-firmware-builder/install.sh
       break ;;
 
     3) # Build IoTeX JRPC Blockchain Visualizer
