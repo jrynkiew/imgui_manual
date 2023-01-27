@@ -2,7 +2,7 @@ version: '2'
 
 services:
   jrpc:
-    container_name: jrpc-linux-buildsystem
+    container_name: imgui_nft_app
     #Uncomment this line to use a pre-built container If you do so, comment out the "build" section
     #image: jrpc1/jrpc-linux-buildsystem:latest
     build: 
@@ -10,7 +10,5 @@ services:
         dockerfile: Dockerfile
     restart: "no"
     volumes:
-      - "..:/imgui_manual"
-    environment:
-      SDL2_DIR: /usr/lib/x86_64-linux-gnu/cmake/SDL2
+      - "..:/imgui_nft_app"
     command: $COMMAND
