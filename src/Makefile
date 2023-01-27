@@ -14,6 +14,7 @@
 #CXX = g++
 #CXX = clang++
 
+OUT = ../out
 EXE = example_glfw_opengl3
 IMGUI_DIR = ./imgui
 SOURCES = main.cpp
@@ -100,6 +101,8 @@ endif
 ## BUILD RULES
 ##---------------------------------------------------------------------
 
+$(shell mkdir -p $(OUT)) 
+
 %.o:%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
@@ -119,7 +122,8 @@ all: $(EXE)
 	@echo Build complete for $(ECHO_MESSAGE)
 
 $(EXE): $(OBJS)
-	$(CXX) -o $@ $^ $(CXXFLAGS) $(LIBS)
+	$(CXX) -o $(OUT)/nft-app $^ $(CXXFLAGS) $(LIBS)
 
 clean:
 	rm -f $(EXE) $(OBJS)
+	rm -r $(OUT)
